@@ -1,0 +1,88 @@
+Keep your entities in this folder
+// $authen= new AuthenServices();
+
+// if (isset($_POST['signin'])) {
+// // recuperation des donnees du formulaire de connexion
+//     $email = $_POST['email'];
+//     $password = $_POST['pwd'];
+
+
+// // verifiaction de l'authentification de l'utilisateur
+//    $authenusers= $authen->login($email,$password);
+
+//    if($users->login()){
+//         echo "Connexion reussie";
+
+//         if($authenusers){
+// //recuperation du role de l'utilisateur authentifier
+//           $role_id = $authenusers->getRoleId();
+
+// //redirection en fonction du role de l'utilisateur
+//             switch ($role_id) {
+//             case 'directeur':
+//                 header('Location: .php');
+//                 exit;
+//             case 'enseignant':
+//                 header('Location: admin.php');
+//                 exit;
+//             case 'secretaire':
+//                 header('Location: admin.php');
+//                 exit;
+//             case 'eutiant':
+//                 header('Location: .php');
+//                 exit;
+//             default:
+//                 // Redirection par défaut ou gestion d'erreur si le rôle n'est pas reconnu
+//                 header('Location: index.php');
+//                 exit;
+//             }
+//         }
+
+//     }
+//    else{
+//     echo "identifiant incorrect.veuillez réessayer";
+//     }
+// }
+    
+ public function __construct( array $data)
+    // {
+    //     if(isset($data['id'])){
+    //         $this->id=$data['id'];
+    //     }
+    //     if(isset($data['role_name'])){
+    //         $this->role_name=$data['role_name'];
+    //     }
+    //     if(isset($data['description'])){
+    //         $this->description=$data['description'];
+    //     }
+       
+    // } 
+
+    // public function insert($name, $email, $password)
+        // {
+
+        // if (isset($_POST['inscrire'])) {
+
+         $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $cpassword = $_POST['cpwd'];
+
+            $user = (new AuthServices())->signUp();
+
+            if (!empty($user)) {
+                echo "Inscription reussie";
+                header("location:signin.php");
+            }
+            if ($password !== $cpassword) {
+                echo "le mot de passe est incorrect. veuillez réessayer";
+            } else if (strlen($password) < 8) {
+                echo "le mot de passe doit contenir au moins 8 caractères";
+            } else {
+                echo "mot de passe valider";
+            }
+
+
+
+             
+
