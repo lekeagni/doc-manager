@@ -16,46 +16,23 @@ class User
     public $deleted;
     public $role_id;
     public $statuts;
-
-    public function __construct(array $data){
-        if(isset($data['id'])){
-            $this->id=$data['id'];
-        }
-        if(isset($data['name'])){
-            $this->name=$data['name'];
-        }
-        if(isset($data['email'])){
-            $this->email=$data['email'];
-        }
-        if(isset($data['password'])){
-            $this->password=$data['password'];
-        }
-        if(isset($data['grade'])){
-            $this->grade=$data['grade'];
-        }
-        if(isset($data['created'])){
-            $this->created=$data['created'];
-        }
-        if(isset($data['created_by'])){
-            $this->created_by=$data['created_by'];
-        }
-        if(isset($data['modified_by'])){
-            $this->modified_by=$data['modified_by'];
-        }
-        if(isset($data['modified_date'])){
-            $this->modified_date=$data['modified_date'];
-        }
-        if(isset($data['deleted'])){
-            $this->deleted=$data['deleted'];
-        }
-        if(isset($data['role_id'])){
-            $this->role_id=$data['role_id'];
-        }
-        if(isset($data['statuts'])){
-            $this->statuts=$data['statuts'];
-        }
-        
+public function __construct($id=null,$name=null, $email=null, $password=null,$role_id=1){
+    if(!empty($id)){
+        $this->id=$id;
     }
+    if(!empty($name)){
+        $this->name=$name;
+    }
+    if(!empty($email)){
+        $this->email=$email;
+    }
+    if(!empty($password)){
+        $this->password=$password;
+    }
+    if(!empty($role_id)){
+        $this->$role_id=$role_id;
+    }
+}
 
     public function getId()
     {
