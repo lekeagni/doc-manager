@@ -5,12 +5,7 @@ namespace App\Service;
 require_once dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'autoload.php';
 
 use Core\Database\DBConnection;
-// use App\Entity\Role;
 use App\Entity\User;
-// use Core\Database\PasswordHasher;
-use Core\FlashMessages\Flash;
-
-
 
 
 class AuthServices
@@ -21,30 +16,65 @@ class AuthServices
         $dbconnection = new DBConnection();
         $this->connection = $dbconnection->getConnection();
     }
-    // public function signUp(User|array $data): ?User {
-    //     if (is_array($data)) {
-    //         $user = $this->toEntity($data);
-    //     } else {
-    //         $user = $data;
-    //     }
-    //     if (empty($user->getName())) {
-    //         Flash::error("Veuillez remplir votre nom");
-    //         return null; // si l'utilisateur
-    //     }
-     
-    //     else{
-    //         $sql="SELECT * FROM user WHERE email=?";
-    //         $statement=$this->connection->prepare($sql);
-    //         $statement->execute();
-    //         $result=$statement->rowCount();
-    //         if($result){
-    //             Flash::error("cet utilisateur existe déjà. Connectez vous juste");
-    //         }
-            
-    //         return null;
+    public function signUp($email):int {
 
+       global  $query;
+
+        $count=1;
+
+        $sql="SELECT * FROM users WHERE email=:EMAIL";
+       
+            $statement=$this->connection->prepare($sql);
+            $statement->bindParam(':email',$email);
+            $statement->fetch(\PDO::FETCH_ASSOC);
+            $query=$statement->execute();
+            
+        return $count;
+    }
+
+
+
+  
+    // public function signUp($name, $email, $password){
+    //     global $query;
+
+    //     if(is_array($name, $email, $password)){
+    //         $user=$this->toEntity($name, $email, $password);
+    //     }else{
+    //         $sql=$this->connection->prepare("SELECT* FROM user WHERE email=:EMAIL");
+    //         $query=$sql->execute();
+    //         $stmt= $query->rowCount()>0;          
+    //         // if($query->rowCount()>0){
+    //         //     return 1;
+    //         // }
     //     }
-    // }
+       
+
+   
+    // // public function signUp(User|array $data): ?User {
+    // //     if (is_array($data)) {
+    // //         $user = $this->toEntity($data);
+    // //     } else {
+    // //         $user = $data;
+    // //     }
+    // //     if (empty($user->getName())) {
+    // //         Flash::error("Veuillez remplir votre nom");
+    // //         return null; // si l'utilisateur
+    // //     }
+     
+    // //     else{
+    // //         $sql="SELECT * FROM user WHERE email=?";
+    // //         $statement=$this->connection->prepare($sql);
+    // //         $statement->execute();
+    // //         $result=$statement->rowCount();
+    // //         if($result){
+    // //             Flash::error("cet utilisateur existe déjà. Connectez vous juste");
+    // //         }
+            
+    // //         return null;
+
+    // //     }
+    //  }
     
     public function toEntity($name, $email, $password): int {
        global $result;
@@ -57,8 +87,7 @@ class AuthServices
             $user3=$user->getPassword();
             $hashed_password=password_hash($user3, PASSWORD_DEFAULT);
             $user4=1;
-
-                
+   
             $sql ="INSERT INTO users( names, email, passwords, role_id) VALUES (:names,:EMAIL,:PASSWORDS,:ROLE_ID)";
             $statement=$this->connection->prepare($sql);
             $statement->bindParam(':names',$user1 );
