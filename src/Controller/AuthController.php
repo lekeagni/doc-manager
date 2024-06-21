@@ -4,6 +4,7 @@ namespace App\Controller;
 
 require_once dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'autoload.php';
 use App\Service\AuthServices;
+use App\Entity\User;
 use Core\FlashMessages\Flash;
 
 class AuthController
@@ -37,53 +38,39 @@ class AuthController
         }
     }
 
-    public function signin(){
+    public function connect(){
 
         global $userId;
 
-       
-        // if(isset($_POST['signin'])){
-            
-        //     $email=$_POST['email1'];
-        //     $password=$_POST['pwd1'];
-
-        //     $userId= (new AuthServices())->signUp($email,$password);
-        //     if((!empty($email)) || (!empty($password))){
-        //         if($password=$hashed_password)
-        //         echo '<script>alert("Connexion reussie !"); </script>';
-        //         header("location:user.php");
-        //     }
         if(isset($_POST['signin'])){
-
-            //verification si les champs ne sont pas ide
+       
+           
             if((!empty($email)) || (!empty($password))){
 
                 // recuperation des elements du formulaire 
                 $email=$_POST['email'];
-                $password=$_POST['pwd'];
-
-                $userId = $this->service->signUp($email, $password);
-
-                if ($userId !== null) {
-                    // Authentification réussie
-                    $_SESSION['userId'] = $userId;
-                    echo '<script>alert("Connexion réussie. Bienvenue !");</script>';
-        
-                    // Redirection vers une page sécurisée
-                    header('Location: .php');
-                    exit();
-                }
-                else {
-                   // Authentification échouée
-                    echo 'Email ou mot de passe incorrect.';
-                }
-
-            }
+                $password=$_POST['password'];
+               
+                
+                    $userId = $this->service->signUp($email, $password);
+                    if ($userId=1) {                    
+                            // Authentification réussie                   
+                        echo '<script> alert("Connexion réussie. Bienvenue !"); </script>';
+                
+                            // Redirection vers la page 
+                        header("Location: page.php");
+                        exit();
+                    }else {
+                        echo '<script> alert("Echec lors de la connexion"); </script>';
+                    }
+                
+            }              
             else {
-                echo 'Veuillez saisir à la fois l\'email et le mot de passe.';
+                // Authentification échouée
+                echo '<script> alert("Email ou mot de passe incorrect."); </script>';
             }
-        } 
-    }     
+        }
+    } 
+}     
    
-}
         

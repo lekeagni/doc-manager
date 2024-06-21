@@ -22,14 +22,14 @@ require_once dirname(__DIR__) . DS . 'Elements' . DS . 'auth-header.php';
                 <h2 class="title">Connectez Vous!</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder=" Email" name="email1" value="" required />
+                    <input type="text" placeholder=" Email" name="email" value="" required />
                 </div>
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Mot de passe" name="pwd1" value="" required />
+                    <input type="password" placeholder="Mot de passe" name="password" value="" required />
                 </div>
                 
-                 <button type="submit" name="signin" class="btn solid"><a href="">Connexion</a></button>
+                 <button type="submit" name="signin" class="btn solid">Connexion</button>
                 <p style="display: flex;justify-content: center;align-items: center;margin-top: 20px;"><a href="forgot-password.php" style="color: #4590ef;">Mot de passe oublié?</a></p>
             </form>  
             <form action="" class="sign-up-form" method="POST">

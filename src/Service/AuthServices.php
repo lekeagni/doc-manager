@@ -16,71 +16,31 @@ class AuthServices
         $dbconnection = new DBConnection();
         $this->connection = $dbconnection->getConnection();
     }
-    public function signUp($email,$password) {
-        $user=new User();
+    public function signUp($email,$password):int {
+        $user=new User('','', $email, $password);
+        $user1=$user->getEmail();
+        $user2=$user->getPassword();
 
-        $sql="SELECT * FROM users WHERE email=:EMAIL";
+        $sql="SELECT * FROM users WHERE email=:email";
        
         $statement=$this->connection->prepare($sql);
-        $statement->bindParam(':email',$email);
-        $statement->fetch(\PDO::FETCH_ASSOC);
-        $user=$statement->execute();
+        $statement->bindParam(':email',$user1);
+        $statement->bindParam(':passwords',$user2);
+       
+        $statement->execute();
+        $query=$statement->fetch(\PDO::FETCH_ASSOC);
 
-        if ($user) {
+        if ( $statement->execute()) {
                 // Vérification du mot de passe
-            if (password_verify($password, $user['password'])) {
+            if (password_verify($user2, $query['password'])) {
                 // Authentification réussie
-                return $user['id'];                
+                return 1;                
             }
 
         }
-           return null;
+           return 0;
     }
 
-
-
-  
-    // public function signUp($name, $email, $password){
-    //     global $query;
-
-    //     if(is_array($name, $email, $password)){
-    //         $user=$this->toEntity($name, $email, $password);
-    //     }else{
-    //         $sql=$this->connection->prepare("SELECT* FROM user WHERE email=:EMAIL");
-    //         $query=$sql->execute();
-    //         $stmt= $query->rowCount()>0;          
-    //         // if($query->rowCount()>0){
-    //         //     return 1;
-    //         // }
-    //     }
-       
-
-   
-    // // public function signUp(User|array $data): ?User {
-    // //     if (is_array($data)) {
-    // //         $user = $this->toEntity($data);
-    // //     } else {
-    // //         $user = $data;
-    // //     }
-    // //     if (empty($user->getName())) {
-    // //         Flash::error("Veuillez remplir votre nom");
-    // //         return null; // si l'utilisateur
-    // //     }
-     
-    // //     else{
-    // //         $sql="SELECT * FROM user WHERE email=?";
-    // //         $statement=$this->connection->prepare($sql);
-    // //         $statement->execute();
-    // //         $result=$statement->rowCount();
-    // //         if($result){
-    // //             Flash::error("cet utilisateur existe déjà. Connectez vous juste");
-    // //         }
-            
-    // //         return null;
-
-    // //     }
-    //  }
-    
     public function toEntity($name, $email, $password): int {
        global $result;
         $user = new User('',$name, $email, $password,'');
