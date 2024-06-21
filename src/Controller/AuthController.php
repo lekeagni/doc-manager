@@ -41,21 +41,49 @@ class AuthController
 
         global $userId;
 
+       
+        // if(isset($_POST['signin'])){
+            
+        //     $email=$_POST['email1'];
+        //     $password=$_POST['pwd1'];
+
+        //     $userId= (new AuthServices())->signUp($email,$password);
+        //     if((!empty($email)) || (!empty($password))){
+        //         if($password=$hashed_password)
+        //         echo '<script>alert("Connexion reussie !"); </script>';
+        //         header("location:user.php");
+        //     }
         if(isset($_POST['signin'])){
-            $email=$_POST['email1'];
-            $password=$_POST['pwd1'];
 
-            $userId= (new AuthServices())->signUp($email);
+            //verification si les champs ne sont pas ide
             if((!empty($email)) || (!empty($password))){
-                // Flash::success("Connexion reussie");
-                echo '<script>alert("Connexion reussie !"); </script>';
-                header("location:user.php");
-            }
-            // if(isset($_GET['redirect'])){
-            //     header("location: user.php");
-            // }
-        }  
-    } 
-}
 
+                // recuperation des elements du formulaire 
+                $email=$_POST['email'];
+                $password=$_POST['pwd'];
+
+                $userId = $this->service->signUp($email, $password);
+
+                if ($userId !== null) {
+                    // Authentification réussie
+                    $_SESSION['userId'] = $userId;
+                    echo '<script>alert("Connexion réussie. Bienvenue !");</script>';
+        
+                    // Redirection vers une page sécurisée
+                    header('Location: .php');
+                    exit();
+                }
+                else {
+                   // Authentification échouée
+                    echo 'Email ou mot de passe incorrect.';
+                }
+
+            }
+            else {
+                echo 'Veuillez saisir à la fois l\'email et le mot de passe.';
+            }
+        } 
+    }     
+   
+}
         

@@ -16,20 +16,25 @@ class AuthServices
         $dbconnection = new DBConnection();
         $this->connection = $dbconnection->getConnection();
     }
-    public function signUp($email):int {
-
-       global  $query;
-
-        $count=1;
+    public function signUp($email,$password) {
+        $user=new User();
 
         $sql="SELECT * FROM users WHERE email=:EMAIL";
        
-            $statement=$this->connection->prepare($sql);
-            $statement->bindParam(':email',$email);
-            $statement->fetch(\PDO::FETCH_ASSOC);
-            $query=$statement->execute();
-            
-        return $count;
+        $statement=$this->connection->prepare($sql);
+        $statement->bindParam(':email',$email);
+        $statement->fetch(\PDO::FETCH_ASSOC);
+        $user=$statement->execute();
+
+        if ($user) {
+                // Vérification du mot de passe
+            if (password_verify($password, $user['password'])) {
+                // Authentification réussie
+                return $user['id'];                
+            }
+
+        }
+           return null;
     }
 
 
